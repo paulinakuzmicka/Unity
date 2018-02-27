@@ -1,19 +1,13 @@
-package com.paulina.kuzmicka.discount.dao;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
+package com.paulina.kuzmicka.discount.domain;
 
 import java.math.BigDecimal;
 
-@Configuration
 public class Order {
 
-    @Autowired
     private Invoice invoice;
     private BigDecimal totalDiscount;
 
-    @Bean
+
     public Invoice getInvoice() {
         return invoice;
     }
@@ -29,5 +23,4 @@ public class Order {
     public void setTotalDiscount(BigDecimal totalDiscount) {
         this.totalDiscount = totalDiscount;
     }
-
 }

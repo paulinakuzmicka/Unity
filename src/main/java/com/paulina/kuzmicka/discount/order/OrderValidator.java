@@ -1,8 +1,8 @@
 package com.paulina.kuzmicka.discount.order;
 
-import com.paulina.kuzmicka.discount.dao.Invoice;
-import com.paulina.kuzmicka.discount.dao.Order;
-import com.paulina.kuzmicka.discount.dao.Product;
+import com.paulina.kuzmicka.discount.domain.Invoice;
+import com.paulina.kuzmicka.discount.domain.Order;
+import com.paulina.kuzmicka.discount.domain.Product;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -19,7 +19,7 @@ public class OrderValidator {
     }
 
     private boolean validateDiscountValue(BigDecimal discount) throws OrderException {
-        if (discount.compareTo(BigDecimal.ZERO) < 0 && discount.scale() > 2) {
+        if (discount.compareTo(BigDecimal.ZERO) < 0 || discount.scale() > 2) {
             throw new OrderException(OrderException.ERR_DISCOUNT_VALUE);
         }
         return true;
@@ -32,7 +32,7 @@ public class OrderValidator {
         return true;
     }
 
-    private boolean validateProductNames(Invoice invoice) throws OrderException {
+    private boolean validateProductNames(Invoice invoice) {
         invoice.getItems().stream()
                 .map(item -> item.getProduct())
                 .forEach(product -> {
@@ -40,14 +40,14 @@ public class OrderValidator {
                         validateProductName(product);
                     } catch (OrderException e) {
                         System.out.println(e);
-                        ;
                     }
                 });
         return true;
     }
 
     private boolean validateProductName(Product product) throws OrderException {
-        if (product.getName().length() < 3) {
+        String trimmedName = product.getName().trim();
+        if (product.getName().length() < 3 || trimmedName.length() != product.getName().length()) {
             throw new OrderException(OrderException.ERR_PRODUCT_NAME);
         }
         return true;
@@ -61,14 +61,13 @@ public class OrderValidator {
                         validateProductPrice(product);
                     } catch (OrderException e) {
                         System.out.println(e);
-                        ;
                     }
                 });
         return true;
     }
 
     private boolean validateProductPrice(Product product) throws OrderException {
-        if (product.getPrice().compareTo(BigDecimal.ZERO) < 0 && product.getPrice().scale() > 2) {
+        if (product.getPrice().compareTo(BigDecimal.ZERO) < 0 || product.getPrice().scale() > 2) {
             throw new OrderException(OrderException.ERR_PRODUCT_PRICE);
         }
         return true;
@@ -79,7 +78,7 @@ public class OrderValidator {
                 .map(item -> item.getProduct().getPrice())
                 .reduce(BigDecimal.ZERO, (sum, current) -> sum = sum.add(current));
 
-        if (order.getTotalDiscount().compareTo(totalInvoicePrice) > 0 ) {
+        if (order.getTotalDiscount().compareTo(totalInvoicePrice) > 0) {
             throw new OrderException(OrderException.ERR_TOTAL_INVOICE_PRICE_AND_DISCOUNT);
         }
         return true;

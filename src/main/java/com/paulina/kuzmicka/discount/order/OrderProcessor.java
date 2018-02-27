@@ -1,25 +1,31 @@
 package com.paulina.kuzmicka.discount.order;
 
-import com.paulina.kuzmicka.discount.dao.Item;
-import com.paulina.kuzmicka.discount.dao.Order;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.paulina.kuzmicka.discount.domain.Item;
+import com.paulina.kuzmicka.discount.domain.Order;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 
 @Service
 public class OrderProcessor {
-    @Autowired
+
     private Order order;
 
-    @Autowired
-    private OrderValidator validator;
+    private final OrderValidator validator = new OrderValidator();
 
     public void processOrder() throws OrderException {
 
         if (validator.validateOrder(order)) {
             setPartialDiscountForAllProducts();
         }
+    }
+
+    public void setOrder(Order order) {
+        this.order = order;
+    }
+
+    public Order getOrder() {
+        return order;
     }
 
     private void setPartialDiscountForAllProducts() {

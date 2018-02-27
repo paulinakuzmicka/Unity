@@ -1,13 +1,14 @@
-package com.paulina.kuzmicka.discount.dao;
-
-import org.springframework.stereotype.Component;
+package com.paulina.kuzmicka.discount.domain;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@Component
+
 public class Invoice {
     private List<Item> items = new ArrayList<>();
+
+    public Invoice() {
+    }
 
     public Invoice(List<Item> items) {
         this.items = items;

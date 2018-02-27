@@ -1,13 +1,16 @@
-package com.paulina.kuzmicka.discount.dao;
-
-import org.springframework.stereotype.Component;
+package com.paulina.kuzmicka.discount.domain;
 
 import java.math.BigDecimal;
 
-@Component
+
 public class Product {
-    private String name;
-    private BigDecimal price;
+    private final String name;
+    private final BigDecimal price;
+
+    public Product(String name, BigDecimal price) {
+        this.name = name;
+        this.price = price;
+    }
 
     public String getName() {
         return name;

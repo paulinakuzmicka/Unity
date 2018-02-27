@@ -1,13 +1,10 @@
-package com.paulina.kuzmicka.discount.dao;
-
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
+package com.paulina.kuzmicka.discount.domain;
 
 import java.math.BigDecimal;
 
-@Configuration
+
 public class Item {
-    private Product product;
+    private final Product product;
     private BigDecimal discount;
 
     public Item(Product product) {
@@ -15,7 +12,6 @@ public class Item {
         discount = BigDecimal.ZERO;
     }
 
-    @Bean
     public Product getProduct() {
         return product;
     }
@@ -30,7 +26,7 @@ public class Item {
 
     @Override
     public String toString() {
-        return "Item{" + product +
+        return "\nItem{" + product +
                 ", discount=" + discount +
                 '}';
     }
